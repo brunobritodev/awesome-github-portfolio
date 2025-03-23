@@ -12,8 +12,8 @@ public class GitHubUser
     public DateTime CreatedAt { get; set; }
     public string Url { get; set; }
     public ContributionsCollection ContributionsCollection { get; set; }
-    public FollowerCollection Followers { get; set; }
-    public FollowingCollection Following { get; set; }
+    public FollowCollection Followers { get; set; }
+    public FollowCollection Following { get; set; }
     public Collection<Organization> Organizations { get; set; }
     public Collection<SocialAccount> SocialAccounts { get; set; }
     public Collection<Repository> PinnedItems { get; set; }

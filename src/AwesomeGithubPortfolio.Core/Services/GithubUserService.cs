@@ -53,23 +53,36 @@ internal class GithubService : IGithubService
         return user;
     }
 
-    public async Task<bool> UserHasStarred(string username)
+    public async Task<bool> UserHasStarred(string username, string pageCursor)
     {
-        var request = new DefaultRequest()
+        do
         {
-            Query = GithubOptions.UserStarredRepositories,
-            OperationName = GithubOptions.OperationName,
-            Variables = new { login = username }
-        };
-        var response = await _policy.ExecuteAndCaptureAsync(() => _client.PostAsJsonAsync("graphql", request, GithubOptions.DefaultJson));
+            var request = new DefaultRequest()
+            {
+                Query = GithubOptions.UserStarredRepositories,
+                OperationName = GithubOptions.OperationName,
+                Variables = new { login = username, after = pageCursor }
+            };
+            var response = await _policy.ExecuteAndCaptureAsync(() => _client.PostAsJsonAsync("graphql", request, GithubOptions.DefaultJson));
 
-        if (response.Outcome != OutcomeType.Successful || !response.Result.IsSuccessStatusCode) return false;
+            if (response.Outcome != OutcomeType.Successful || !response.Result.IsSuccessStatusCode) return false;
 
-        var userInfo =
-            await JsonSerializer.DeserializeAsync<DefaultResponse<UserData>>(
-                await response.Result.Content.ReadAsStreamAsync(), GithubOptions.DefaultJson);
+            var userInfo = await JsonSerializer.DeserializeAsync<DefaultResponse<UserData>>(await response.Result.Content.ReadAsStreamAsync(), GithubOptions.DefaultJson);
 
-        return userInfo.Data.User.StarredRepositories.Nodes.Any(a => a.NameWithOwner.Equals("brunobritodev/awesome-github-portfolio"));
+            if (userInfo.Data.User.StarredRepositories.Nodes.Any(a => a.NameWithOwner.Equals("brunobritodev/awesome-github-portfolio")))
+                return true;
+
+            if (userInfo.Data.User.StarredRepositories.PageInfo.HasNextPage)
+            {
+                pageCursor = userInfo.Data.User.StarredRepositories.PageInfo.EndCursor;
+            }
+            else
+            {
+                pageCursor = null;
+            }
+        } while (pageCursor != null);
+
+        return false;
     }
 
     public async Task<string> FetchUserReadme(string githubUserLogin)
@@ -96,26 +109,35 @@ internal class GithubService : IGithubService
         return JsonSerializer.Deserialize<PortfolioViewModel>(data, GithubOptions.DefaultJson);
     }
 
-    public async Task<string> ChooseModel(string username)
+    public async Task<string> ChooseModel(string username, string pageCursor)
     {
-        var request = new DefaultRequest()
+        do
         {
-            Query = GithubOptions.UserFollowers,
-            OperationName = GithubOptions.OperationName,
-            Variables = new { login = username }
-        };
-        var response = await _policy.ExecuteAndCaptureAsync(() => _client.PostAsJsonAsync("graphql", request, GithubOptions.DefaultJson));
+            var request = new DefaultRequest()
+            {
+                Query = GithubOptions.UserFollowers, 
+                OperationName = GithubOptions.OperationName, 
+                Variables = new { login = username, after = pageCursor }
+            };
+            var response = await _policy.ExecuteAndCaptureAsync(() => _client.PostAsJsonAsync("graphql", request, GithubOptions.DefaultJson));
 
-        if (response.Outcome != OutcomeType.Successful || !response.Result.IsSuccessStatusCode) return "gpt-4o-mini";
+            if (response.Outcome != OutcomeType.Successful || !response.Result.IsSuccessStatusCode) return "gpt-4o-mini";
 
-        var userInfo =
-            await JsonSerializer.DeserializeAsync<DefaultResponse<UserData>>(
-                await response.Result.Content.ReadAsStreamAsync(), GithubOptions.DefaultJson);
+            var userInfo = await JsonSerializer.DeserializeAsync<DefaultResponse<UserData>>(await response.Result.Content.ReadAsStreamAsync(), GithubOptions.DefaultJson);
 
+            var followingMe = userInfo?.Data?.User.Following.Nodes.Any(a => a.Login.Equals("brunobritodev"));
+            if (followingMe is not null && followingMe.Value) return "gpt-4o";
 
-        var followingMe = userInfo?.Data?.User.Following.Nodes.Any(a => a.Login.Equals("brunobritodev"));
-        if (followingMe is not null && followingMe.Value)
-            return "gpt-4o";
+            if (userInfo?.Data is not null & userInfo.Data.User.Following.PageInfo.HasNextPage)
+            {
+                pageCursor = userInfo?.Data?.User.Following.PageInfo.EndCursor;
+            }
+            else
+            {
+                pageCursor = null;
+            }
+            
+        } while (pageCursor != null);
         
         return "gpt-4o-mini";
     }

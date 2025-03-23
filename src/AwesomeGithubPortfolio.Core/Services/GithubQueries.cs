@@ -17,9 +17,13 @@ namespace AwesomeGithubPortfolio.Core.Services
         public const string OperationName = "userInfo";
 
         public const string UserFollowers = @"
-             query userInfo($login: String!) {
+             query userInfo($login: String!, $after: String) {
                 user(login: $login) {
-  	              following (first: 100){
+  	              following (first: 100, after: $after) {
+                    pageInfo {
+                      endCursor
+                      hasNextPage
+                    }
                     nodes{
                       login
                     }
@@ -27,9 +31,13 @@ namespace AwesomeGithubPortfolio.Core.Services
 	              }
              }";
         public const string UserStarredRepositories = @"
-             query userInfo($login: String!) {
+             query userInfo($login: String!, $after: String) {
                 user(login: $login) {
-  	              starredRepositories {
+  	              starredRepositories(first: 100, after: $after) {
+                    pageInfo {
+                      endCursor
+                      hasNextPage
+                    }
                     nodes {
                       nameWithOwner
                     }

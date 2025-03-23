@@ -6,9 +6,9 @@ namespace AwesomeGithubPortfolio.Core.Interfaces
     public interface IGithubService
     {
         Task<GitHubUser> FetchUserData(string username);
-        Task<bool> UserHasStarred(string username);
+        Task<bool> UserHasStarred(string username, string pageCursor = null);
         Task<string> FetchUserReadme(string githubUserLogin);
         Task<PortfolioViewModel> FetchCustomPortfolioFromFork(string username);
-        Task<string> ChooseModel(string username);
+        Task<string> ChooseModel(string username, string pageCursor = null);
     }
 }
