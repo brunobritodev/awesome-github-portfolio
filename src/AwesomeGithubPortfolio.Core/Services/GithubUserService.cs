@@ -67,8 +67,11 @@ internal class GithubService : IGithubService
 
             if (response.Outcome != OutcomeType.Successful || !response.Result.IsSuccessStatusCode) return false;
 
-            var userInfo = await JsonSerializer.DeserializeAsync<DefaultResponse<UserData>>(await response.Result.Content.ReadAsStreamAsync(), GithubOptions.DefaultJson);
-
+            var content = await response.Result.Content.ReadAsStringAsync();
+            var userInfo = JsonSerializer.Deserialize<DefaultResponse<UserData>>(content, GithubOptions.DefaultJson);
+            if (userInfo.Data.User == null) 
+                return false;
+            
             if (userInfo.Data.User.StarredRepositories.Nodes.Any(a => a.NameWithOwner.Equals("brunobritodev/awesome-github-portfolio")))
                 return true;
 
@@ -115,8 +118,8 @@ internal class GithubService : IGithubService
         {
             var request = new DefaultRequest()
             {
-                Query = GithubOptions.UserFollowers, 
-                OperationName = GithubOptions.OperationName, 
+                Query = GithubOptions.UserFollowers,
+                OperationName = GithubOptions.OperationName,
                 Variables = new { login = username, after = pageCursor }
             };
             var response = await _policy.ExecuteAndCaptureAsync(() => _client.PostAsJsonAsync("graphql", request, GithubOptions.DefaultJson));
@@ -136,9 +139,8 @@ internal class GithubService : IGithubService
             {
                 pageCursor = null;
             }
-            
         } while (pageCursor != null);
-        
+
         return "gpt-4o-mini";
     }
 
