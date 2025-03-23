@@ -7,17 +7,18 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["AwesomeGithubPortfolio/AwesomeGithubPortfolio.csproj", "AwesomeGithubPortfolio/"]
-RUN dotnet restore "AwesomeGithubPortfolio/AwesomeGithubPortfolio.csproj"
+COPY ["AwesomeGithubPortfolio.Site/AwesomeGithubPortfolio.Site.csproj", "AwesomeGithubPortfolio.Site/"]
+COPY ["AwesomeGithubPortfolio.Core/AwesomeGithubPortfolio.Core.csproj", "AwesomeGithubPortfolio.Core/"]
+RUN dotnet restore "AwesomeGithubPortfolio.Site/AwesomeGithubPortfolio.Site.csproj"
 COPY . .
-WORKDIR "/src/AwesomeGithubPortfolio"
-RUN dotnet build "AwesomeGithubPortfolio.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/AwesomeGithubPortfolio.Site"
+RUN dotnet build "AwesomeGithubPortfolio.Site.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "AwesomeGithubPortfolio.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "AwesomeGithubPortfolio.Site.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AwesomeGithubPortfolio.dll"]
+ENTRYPOINT ["dotnet", "AwesomeGithubPortfolio.Site.dll"]
