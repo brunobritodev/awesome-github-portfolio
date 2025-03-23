@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.0...v1.0.1) (2025-03-23)
+
+
+### Bug Fixes
+
+* js ([7def41b](https://github.com/brunobritodev/awesome-github-portfolio/commit/7def41bb6f540eec85bd351fff9655d73be931f4))
+
 # 1.0.0 (2025-03-23)
 
 
