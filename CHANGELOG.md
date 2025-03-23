@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.2...v1.0.3) (2025-03-23)
+
+
+### Bug Fixes
+
+* endcursor for users who have more than 100 starred repos ([9384ee3](https://github.com/brunobritodev/awesome-github-portfolio/commit/9384ee30d4d36b93ed3fff8985ef17f64b05cc8f))
+
 ## [1.0.2](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.1...v1.0.2) (2025-03-23)
 
 
