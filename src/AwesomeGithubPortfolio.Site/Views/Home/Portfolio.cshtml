@@ -1,0 +1,536 @@
+﻿@using Markdig
+@using Microsoft.Extensions.DependencyInjection.Extensions
+@model AwesomeGithubPortfolio.Site.Model.ResumeViewModel
+
+@section Head
+{
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://cdnjs.com">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>GitHub Resume Builder - avera</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/assets/css/resume/bootstrap.min.css"/>
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- Main CSS -->
+    <environment include="Production">
+        <link href="/assets/css/resume/main.min.css" asp-append-version="true" rel="stylesheet" media="print" onload="this.media='all'">
+    </environment>
+    <environment exclude="Production">
+        <link href="/assets/css/resume/main.css" rel="stylesheet" media="print" onload="this.media='all'">
+    </environment>
+
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdnjs.cloudflare.com/ajax/libs/pushy/1.1.0/css/pushy.min.css" integrity="sha512-+yV6iHQAjNf3ZcArUAl+TK3eg8fj+Kg77LwPRKMmIT+ksVHKxGFSHozwZ6Peb+1CNU5yixg2KhC4RQRFY3SZog==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/1.1.2/normalize.min.css" integrity="sha512-EY6K0bQO8WvXsxR9rpx2HJGmTLA4dVc+BuJB4ZGPVQH+M7P03uh5nTO5XX2NMLWWJ3zW7K/a0nfuQoP+7ikV+w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- Google Fonts -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet" media="print" onload="this.media='all'">
+}
+
+<!-- Preloader -->
+<div class="preloader-wrap">
+    <div class="preloader">
+        <div class="lines">
+            <div class="line line-1"></div>
+            <div class="line line-2"></div>
+            <div class="line line-3"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Header Section -->
+<div class="header-clip" id="header-clip">
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <!-- Navigation Sidebar -->
+                <button class="menu-btn">
+                    <i class="fa fa-navicon"></i>
+                </button>
+                <nav class="pushy pushy-right" data-focus="#first-link">
+                    <div class="pushy-content">
+                        <ul>
+                            <li class="pushy-link">
+                                <a href="#header-clip">HOME</a>
+                            </li>
+                            <li class="pushy-link">
+                                <a href="#about">@Model.Sections.AboutMe.ToUpper()</a>
+                            </li>
+                            <li class="pushy-link">
+                                <a href="#resume">@Model.Sections.Projects.ToUpper()</a>
+                            </li>
+                            <li class="pushy-link">
+                                <a href="#work">@Model.Sections.Work.ToUpper()</a>
+                            </li>
+                            <li class="pushy-link">
+                                <a href="#clients">@Model.Sections.Projects.ToUpper()</a>
+                            </li>
+                            <!-- Submenu -->
+                            <li class="pushy-submenu">
+                                <button>FOLLOW</button>
+                                <ul>
+                                    <li class="pushy-link">
+                                        <a href="@Model.Header.GitHubUrl">GITHUB</a>
+                                    </li>
+                                    @if (Model.Header.HasLinkedin)
+                                    {
+                                        <li class="pushy-link">
+                                            <a href="@Model.Header.LinkedinUrl">LINKEDIN</a>
+                                        </li>
+                                    }
+                                    @if (Model.Header.HasInstagram)
+                                    {
+                                        <li class="pushy-link">
+                                            <a href="@Model.Header.InstagramUrl">INSTAGRAM</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- Site Overlay -->
+                <div class="site-overlay"></div>
+                <div class="header-wrapper">
+                    <div class="col-12">
+                        <h1>@Model.Name</h1>
+                        <hr class="line">
+                        <h2>@Model.Header.Bio</h2>
+                    </div>
+                </div>
+                <div class="profile-wrapper d-none d-lg-block">
+                    <div class="col-12">
+                        <img src="@Model.Header.Picture" class="img-fluid profile-photo" alt="@Model.Name"/>
+                    </div>
+                </div>
+                <ul class="home-social">
+                    <li>
+                        <a href="@Model.Header.GitHubUrl" target="_blank">
+                            <i class="fa-brands fa-github" data-bs-toggle="tooltip" data-bs-placement="right" title="GitHub"></i>
+                        </a>
+                    </li>
+                    @if (Model.Header.HasLinkedin)
+                    {
+                        <li>
+                            <a href="@Model.Header.LinkedinUrl" target="_blank" data-bs-toggle="tooltip" data-bs-placement="right" title="Linkedin">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                        </li>
+                    }
+                    @if (Model.Header.HasInstagram)
+                    {
+                        <li>
+                            <a href="@Model.Header.InstagramUrl" target="_blank" data-bs-toggle="tooltip" data-bs-placement="right" title="Instagram">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </li>
+                    }
+                    @foreach (var url in Model.Header.OtherSocialAccounts)
+                    {
+                        <li>
+                            <a href="@url" data-bs-toggle="tooltip" target="_blank" data-bs-placement="right" title="@url">
+                                <i class="fa-solid fa-globe"></i>
+                            </a>
+                        </li>
+                    }
+
+
+                </ul>
+                <div class="scrolldown">
+                    <a href="#about" class="scroll-icon smoothscroll">
+                        @Model.Sections.LearnMore
+                        <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main wrapper Section -->
+<div class="main-wrapper">
+
+<!-- About Section -->
+<div class="about" id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-xs-12 text-center">
+                <div class="userpic">
+                    <img loading="lazy" src="@Model.About.Picture" class="img-fluid profile-image" alt="@Model.Name" width="200">
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 text-center">
+                <h4 class="title">@Model.AboutMeTitle()</h4>
+                @if (Model.About.Location.IsPresent())
+                {
+                    <small class="text-info">@Model.About.Location</small>
+                }
+
+                <hr class="line">
+                <p class="title-text">@Model.About.CareerStartMessage</p>
+            </div>
+            <div class="col-md-12 col-xs-12 text-center">
+                <div class="bio-text">
+                    @Html.Raw(Markdown.ToHtml(Model.About.ProfessionalSummary))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Skills Section -->
+<div class="skills text-center" id="skills">
+    <div class="container">
+        <div class="row">
+            @foreach (var skill in Model.SkillSection.UsedLanguages)
+            {
+                <div class="col-md-3 col-sm-6 skill">
+                    <span class="chart" data-percent="@skill.Percentage">
+                        <span class="percent">@skill.Count$%"</span>
+                    </span>
+                    <h5>@skill.Name</h5>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="services" id="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12 text-center">
+                <h4 class="title">@Model.Sections.Services</h4>
+                <hr class="line">
+                <p class="title-text">@Model.Sections.ServiceTitle</p>
+            </div>
+
+            @foreach (var category in Model.SkillSection.ServiceCategories)
+            {
+                <div class="col-md-4">
+                    <div class="service-wrap">
+                        <div class="icon">
+                            <i class="fa @category.Icon" aria-hidden="true"></i>
+                        </div>
+                        <h4 class="heading">@category.Category</h4>
+                        <p class="description">
+                            @Model.Sections.CategoryDescription[category.Category]
+                        </p>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<!-- Resume Section -->
+<div class="resume" id="resume">
+    <div class="container">
+        <div class="row text-center">
+
+            <div class="col-lg-12 col-md-12 col-xs-12">
+                <h4 class="title">@Model.Sections.Projects</h4>
+                <hr class="line">
+                <p class="title-text">@Model.Sections.ProjectTitle</p>
+            </div>
+
+            <div class="col-lg-12">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item borderFade" role="presentation">
+                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">@Model.Sections.WellKnowProjects</button>
+                    </li>
+                    <li class="nav-item borderFade" role="presentation">
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">@Model.Sections.MyProjects</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                        <ul class="resume-list">
+                            @{
+                                var left = false;
+                            }
+                            @foreach (var project in Model.ProjectsSection.WellKnownRepositories)
+                            {
+                                left = !left;
+                                var timelineClass = left ? "" : "timeline-inverted";
+
+                                <li class="@timelineClass">
+                                    <div class="timeline-image">
+                                        <h4>
+                                            @Model.Sections.FirstContribution <br>
+                                            - <br>
+                                            @project.FirstContributionYear
+                                        </h4>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4>
+                                                <a href="@project.Url" data-bs-toggle="tooltip" data-bs-placement="top" title="@project.Url" target="_blank">@project.NameWithOwner</a>
+                                            </h4>
+                                            <h4 class="subheading">@project.StarCount.ToString("N0") stars <i class="bi bi-stars"></i> - @project.ForkCount.ToString("N0") forks</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>@project.Description</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                        <ul class="resume-list">
+                            @{
+                                left = false;
+                            }
+                            @foreach (var project in Model.ProjectsSection.MyProjects)
+                            {
+                                left = !left;
+                                var timelineClass = left ? "" : "timeline-inverted";
+
+                                <li class="@timelineClass">
+                                    <div class="timeline-image">
+                                        <h4>
+                                            @Model.Sections.FirstContribution <br>
+                                            - <br>
+                                            @project.FirstContributionYear
+                                        </h4>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4>
+                                                <a href="@project.Url" data-bs-toggle="tooltip" data-bs-placement="top" title="@project.Url" target="_blank">@project.NameWithOwner</a>
+                                            </h4>
+                                            <h4 class="subheading">@project.StarCount.ToString("N0") stars <i class="bi bi-stars"></i> - @project.ForkCount.ToString("N0") forks</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>@project.Description</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+                </div><!-- Tab row div end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Portfolio Section -->
+<div class="work" id="work">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12 col-xs-12 text-center">
+                <h4 class="title">@Model.Sections.MoreWork</h4>
+                <hr class="line">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" id="myWork" role="tablist">
+                    @{
+                        var firstTab = true;
+                    }
+                    @foreach (var item in Model.WorkerSection.RepositoriesFromCategory)
+                    {
+                        var navlinkClass = "";
+                        if (firstTab)
+                        {
+                            navlinkClass = "active";
+                            firstTab = false;
+                        }
+
+                        <li class="nav-item borderFade" role="presentation">
+                            <button class="nav-link @navlinkClass" id="@item.Key-tab" data-bs-toggle="tab" data-bs-target="#@item.Key" type="button" role="tab" aria-controls="@item.Key" aria-selected="false">@item.Key</button>
+                        </li>
+                    }
+
+                    <li class="nav-item borderFade" role="presentation">
+                        <button class="nav-link" id="all-work-tab" data-bs-toggle="tab" data-bs-target="#all-work" type="button" role="tab" aria-controls="all-work" aria-selected="false">all</button>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="tab-content" id="pills-workContent">
+                @{
+                    firstTab = true;
+                }
+                @foreach (var item in Model.WorkerSection.RepositoriesFromCategory)
+                {
+                    var navlinkClass = "";
+                    if (firstTab)
+                    {
+                        navlinkClass = "active";
+                        firstTab = false;
+                    }
+
+                    <div class="tab-pane fade show @navlinkClass" id="@item.Key" role="tabpanel" aria-labelledby="@item.Key-tab" tabindex="0">
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                            @foreach (var repoName in item.Value.Take(3))
+                            {
+                                var repo = @Model.WorkerSection.Repositories[repoName];
+
+                                <div class="col">
+                                    <div class="card h-100">
+                                        <div class="card-body d-flex flex-column">
+                                            <div class="mb-3">
+                                                @foreach (var lang in Model.WorkerSection.LanguagesFromRepository[repo.Name])
+                                                {
+                                                    <span class="badge rounded-pill">@lang.ToLower()</span>
+                                                }
+                                            </div>
+                                            <h3 class="card-title">
+                                                <a href="@repo.Url" data-bs-toggle="tooltip" data-bs-placement="top" title="@repo.Url" target="_blank">@repo.NameWithOwner</a>
+                                            </h3>
+                                            <p class="card-text">
+                                                @repo.Description
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                <div class="tab-pane fade show" id="all-work" role="tabpanel" aria-labelledby="all-work-tab" tabindex="0">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        @foreach (var repo in Model.WorkerSection.Repositories.Values.OrderByDescending(b => b.StarCount).Take(42))
+                        {
+                            <div class="col">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="mb-3">
+                                            @foreach (var lang in Model.WorkerSection.LanguagesFromRepository[repo.Name])
+                                            {
+                                                <span class="badge rounded-pill">@lang.ToLower()</span>
+                                            }
+                                        </div>
+                                        <h3 class="card-title">
+                                            <a href="@repo.Url" data-bs-toggle="tooltip" data-bs-placement="top" title="@repo.Url" target="_blank">@repo.NameWithOwner</a>
+                                        </h3>
+                                        <p class="card-text">
+                                            @repo.Description
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.FollowersSection.Followers.Any())
+{
+    <!-- Follower Section -->
+    <div class="clients" id="clients">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-xs-12 text-center">
+                    <h3>@Model.Sections.FollowersTitle</h3>
+                    <small class="text-info">@Model.Sections.FollowersMessage</small>
+                    <hr class="line">
+                </div>
+                @foreach (var follower in Model.FollowersSection.Followers.Take(3))
+                {
+                    <div class="col-md-2 col-xs-12 text-center">
+                        <img loading="lazy" src="@follower.AvatarUrl" class="logos rounded-circle" width="80" alt="client">
+                    </div>
+                }
+                @* hide on mobile *@
+                @foreach (var follower in Model.FollowersSection.Followers.Skip(3).Take(45))
+                {
+                    <div class="col-md-2 col-xs-12 text-center d-none d-md-block">
+                        <img loading="lazy" src="@follower.AvatarUrl" class="logos rounded-circle" width="80" alt="client">
+                    </div>
+                }
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+        </div>
+    </div>
+}
+<!-- Contact Form Section -->
+
+<div class="info" id="info">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+
+            <div class="col-md-12 col-xs-12 text-center">
+                <h4 class="title">@Model.Sections.MeInNumbersTitle</h4>
+                <hr class="line">
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="phone">
+
+                    <a href="https://github.com/brunobritodev/awesome-github-stats" target="_blank">
+                        <img alt="@Model.Name's GitHub Stats" src="https://awesome-github-stats.azurewebsites.net/user-stats/@Model.Login?cardType=github&theme=github-dark&preferLogin=false&Title=F2B807&Background=1D1D1D&Text=FAFAFA"/>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Social Section -->
+<div class="footer-social" id="footer-social">
+    <div class="container">
+        <div class="row d-flex justify-content-center ">
+            @if (Model.Header.HasLinkedin)
+            {
+                <div class="col-lg-2 col-md-3 col-xs-12 swingHorizontal">
+                    <a href="@Model.Header.LinkedinUrl" target="_blank">
+                        <h4 class="linked">linkedin</h4>
+                    </a>
+                </div>
+            }
+            <div class="col-lg-2 col-md-3 col-xs-12 swingHorizontal">
+                <a href="@Model.Header.GitHubUrl" target="_blank">
+                    <h4 class="github">GitHub</h4>
+                </a>
+            </div>
+            @if (Model.Header.HasLinkedin)
+            {
+                <div class="col-lg-2 col-md-3 col-xs-12 swingHorizontal">
+                    <a href="@Model.Header.InstagramUrl" target="_blank">
+                        <h4 class="insta">instagram</h4>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-xs-12">
+                    <h4 class="text-center">Mantido por @@avera - <a target="_blank" href="https://avera.com.br">avera.com.br</a>.</h4>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js" integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" integrity="sha512-Kef5sc7gfTacR7TZKelcrRs15ipf7+t+n7Zh6mKNJbmW+/RRdCW9nwfLn4YX0s2nO6Kv5Y2ChqgIakaC6PW09A==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="/assets/js/resume/easypiechart.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pushy/1.1.0/js/pushy.min.js" integrity="sha512-uKpoUaYltZ+WUUA7YfU+DzADvbNNbf/0S6cMRfdRHQinNotnRXWZx6+xIF0LbupSF/gpGzw42XjGUCtPr8qEPA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script src="/assets/js/resume/animatedHeadline.min.js" defer></script>
+    <environment include="Production">
+        <script src="/assets/js/resume/main.min.js" defer></script>
+    </environment>
+    <environment exclude="Production">
+        <script src="/assets/js/resume/main.js" defer></script>
+    </environment>
+}

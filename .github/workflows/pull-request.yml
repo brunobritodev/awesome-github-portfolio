@@ -1,0 +1,32 @@
+name: Pull Request Analisys
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  dotnet-testing-pr:
+    runs-on: ubuntu-latest
+    env:
+      PATS__0: ${{ secrets.GITHUB_TOKEN }}
+    defaults:
+      run:
+        working-directory: src
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal

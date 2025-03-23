@@ -1,0 +1,177 @@
+﻿@model AwesomeGithubPortfolio.Site.Model.IndexViewModel
+@section Scripts{
+    <script src="@Url.Content("/assets/js/index.js")"  asp-append-version="true" defer></script>
+}
+@section Head
+{
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css?family=Ubuntu">
+    <link rel="stylesheet" href="@Url.Content($"~/assets/css/avera.min.css")" asp-append-version="true">
+    <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/npm/@@mdi/font@7.4.47/css/materialdesignicons.min.css">
+    <style>
+    .waiting {
+        position: relative;
+        overflow: hidden;
+        color: transparent;
+        background-color: transparent; 
+        transition: background-color 0.4s;
+    }
+
+    .waiting::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background-color: #29baf9;
+        animation: fillEffect 15s forwards;
+        z-index: 0;
+    }
+
+    @@keyframes fillEffect {
+         0% {
+             left: -100%;
+         }
+
+         40% {
+             left: -20%;
+         }
+
+         100% {
+             left: 0%;
+         }
+     }
+
+    .waiting i,
+    .waiting span {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+}
+
+<main>
+    <section class="container d-flex flex-column vh-100">
+        <div class="row align-items-center justify-content-center g-0 h-lg-100 py-8">
+            <div class="col-lg-9 col-md-10 py-8 py-xl-0">
+                <!-- Card -->
+                <div class="card shadow">
+                    <!-- Card body -->
+                    <div class="card-body p-6">
+                        @if (!Model.IsReady.GetValueOrDefault(true))
+                        {
+                            <div class="alert alert-danger" role="alert" id="ready-message">
+                                <p>
+                                    This portfolio isn't available at the moment.<br>
+                                    Here are some possible reasons:
+                                </p>
+                                <ul>
+                                    <li>It's currently in the generation queue</li>
+                                    <li>The user hasn't starred the repository yet</li>
+                                </ul>
+
+                                <p>
+                                    If you believe this is a mistake, please open an issue on <a href="https://github.com/brunobritodev/awesome-github-portfolio" target="_blank">GitHub</a>.
+                                </p>
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <h1 class="mb-1 fw-bold">🧠 Awesome GitHub Portfolio</h1>
+                            <p>
+                                As a developer, your code speaks louder than any PDF résumé.
+                                This open source project automatically generates a personal portfolio based on your public GitHub activity — helping you showcase your real-world development experience.
+                            </p>
+                            <p>
+                                Check out some demos:
+                            </p>
+                            <div>
+                                <a asp-action="Portfolio" asp-route-username="brunobritodev" class="btn btn-xs btn-outline-primary">brunobritodev</a>
+                                <a asp-action="Portfolio" asp-route-username="renatogroffe" class="btn btn-xs btn-outline-info">renatogroffe</a>
+                                <a asp-action="Portfolio" asp-route-username="luizcarlosfaria" class="btn btn-xs btn-outline-success">luizcarlosfaria</a>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h2>🚀 How to generate your portfolio?</h2>
+                            <ol>
+                                <li>
+                                    <strong>Star the project</strong> ⭐
+                                    <br>To ensure fair API usage and support the project, portfolios are only generated for users who starred the repository.
+                                </li>
+                                <li>
+                                    Enter your <strong>GitHub username</strong>
+                                    <!-- Username -->
+                                    <div class="mb-3 input-group" id="generate">
+                                        <input type="text" id="github-username" class="form-control" name="username" placeholder="Enter your GitHub username address here" value="@Model.Username">
+                                        <button type="button" onclick="generatePortfolio()" class="btn btn-primary">Generate</button>
+                                    </div>
+                                    <button type="button" id="waiting" class="btn btn-outline-info text-dark w-100 mb-3 mb-lg-0 me-4 d-none">
+                                        <span>Generating... </span><i class="fa-duotone fa-spinner text-dark fa-spin-pulse"></i>
+                                    </button>
+
+                                    <div class="alert alert-danger" role="alert" id="error-message" style="display: none">
+
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/brunobritodev" target="_blank" rel="noopener">
+                                        <strong>Unlock GPT-4o magic by following me 🧙‍♂️</strong>
+                                        <br>
+                                        <span class="text-dark">
+                                            Follow me on GitHub to unlock the fancy GPT-4o version — it writes smarter descriptions and makes your portfolio shine ✨
+                                            <br>Plus, it helps me prove to my mom that I'm actually popular on the internet 😅
+                                        </span>
+                                    </a>
+                                </li>
+                            </ol>
+                        </div>
+
+                        <div class="mb-3">
+                            <h2>💡 Why is this important?</h2>
+                            <p>
+                                Many tech recruiters and companies (including us!) love seeing a candidate’s GitHub profile.
+                                It shows your actual skills: project contributions, commit history, used technologies, and more.
+                                With this generator, any dev can create a clean, professional portfolio in seconds — all powered by real GitHub data.
+                            </p>
+                            <h2>Want to customize it?</h2>
+                            
+                            <ol>
+                                <li>Download your current portfolio data as a JSON file
+                                    <div class="mb-3 input-group">
+                                        <input type="text" id="github-username-download" class="form-control" name="username" placeholder="Enter your GitHub username address here" value="@Model.Username">
+                                        <button type="button" onclick="downloadPortfolio()" class="btn btn-primary">Download</button>
+                                    </div>
+                                </li>
+                                <li>Fork this repository to your own GitHub account.</li>
+                                <li>
+                                    In the root of your forked repo, create a new JSON file with your GitHub username as the filename. <br>
+                                    <strong>Example:</strong> <code>brunobritodev.json</code>
+                                </li>
+                                <li>
+                                    In the sections you want to customize, add the property <code>"override": true</code>. <br>
+                                    This tells the generator to use your custom content instead of the default.
+                                </li>
+                            </ol>
+
+                            <p>Once you push the changes, your customized portfolio will be generated automatically based on your file!</p>
+                        </div>
+                        <div class="mb-2">
+                            <hr class="my-4">
+                            <div class="mt-4 text-center">
+                                <!--LinkedIn-->
+                                <a href="https://github.com/brunobritodev/" target="_blank" class="btn-social btn-social-outline btn-instagram">
+                                    <i class="mdi mdi-github"></i>
+                                </a>
+                                <!--GitHub-->
+                                <a href="https://www.linkedin.com/brunobritodev" class="btn-social btn-social-outline btn-github">
+                                    <i class="mdi mdi-linkedin"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

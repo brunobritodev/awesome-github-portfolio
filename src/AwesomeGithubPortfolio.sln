@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeGithubPortfolio.Site", "AwesomeGithubPortfolio.Site\AwesomeGithubPortfolio.Site.csproj", "{C2F1CCA3-8306-4718-8AEE-39622C1EB295}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeGithubPortfolio.Core", "AwesomeGithubPortfolio.Core\AwesomeGithubPortfolio.Core.csproj", "{0822EC82-5C9A-4CEF-8565-BBD5FC210914}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2F1CCA3-8306-4718-8AEE-39622C1EB295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2F1CCA3-8306-4718-8AEE-39622C1EB295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2F1CCA3-8306-4718-8AEE-39622C1EB295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2F1CCA3-8306-4718-8AEE-39622C1EB295}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0822EC82-5C9A-4CEF-8565-BBD5FC210914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0822EC82-5C9A-4CEF-8565-BBD5FC210914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0822EC82-5C9A-4CEF-8565-BBD5FC210914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0822EC82-5C9A-4CEF-8565-BBD5FC210914}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
