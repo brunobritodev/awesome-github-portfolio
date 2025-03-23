@@ -12,12 +12,7 @@
     <link rel="stylesheet" href="/assets/css/resume/bootstrap.min.css"/>
     <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <!-- Main CSS -->
-    <environment include="Production">
-        <link href="/assets/css/resume/main.min.css" asp-append-version="true" rel="stylesheet" media="print" onload="this.media='all'">
-    </environment>
-    <environment exclude="Production">
-        <link href="/assets/css/resume/main.css" rel="stylesheet" media="print" onload="this.media='all'">
-    </environment>
+    <link href="/assets/css/resume/main.css" rel="stylesheet" media="print" onload="this.media='all'">
 
     <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdnjs.cloudflare.com/ajax/libs/pushy/1.1.0/css/pushy.min.css" integrity="sha512-+yV6iHQAjNf3ZcArUAl+TK3eg8fj+Kg77LwPRKMmIT+ksVHKxGFSHozwZ6Peb+1CNU5yixg2KhC4RQRFY3SZog==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -507,16 +502,16 @@
     </div>
 </div>
 
-    <!-- Footer Section -->
-    <footer>
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-xs-12">
-                    <h4 class="text-center">Mantido por @@avera - <a target="_blank" href="https://avera.com.br">avera.com.br</a>.</h4>
-                </div>
+<!-- Footer Section -->
+<footer>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-xs-12">
+                <h4 class="text-center">Mantido por @@avera - <a target="_blank" href="https://avera.com.br">avera.com.br</a>.</h4>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 </div>
 
 @section Scripts
@@ -527,10 +522,5 @@
     <script src="/assets/js/resume/easypiechart.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pushy/1.1.0/js/pushy.min.js" integrity="sha512-uKpoUaYltZ+WUUA7YfU+DzADvbNNbf/0S6cMRfdRHQinNotnRXWZx6+xIF0LbupSF/gpGzw42XjGUCtPr8qEPA==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <script src="/assets/js/resume/animatedHeadline.min.js" defer></script>
-    <environment include="Production">
-        <script src="/assets/js/resume/main.min.js" defer></script>
-    </environment>
-    <environment exclude="Production">
-        <script src="/assets/js/resume/main.js" defer></script>
-    </environment>
+    <script src="/assets/js/resume/main.js" asp-append-version="true" defer></script>
 }
