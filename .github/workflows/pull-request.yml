@@ -2,7 +2,7 @@ name: Pull Request Analisys
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   dotnet-testing-pr:

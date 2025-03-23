@@ -1,9 +1,9 @@
-name: MASTER - Build & Deploy
+name: Build & Deploy
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   tag-generation:
