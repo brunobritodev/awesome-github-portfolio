@@ -10,7 +10,7 @@ permissions:
   issues: write
   pull-requests: write
   packages: write
-  
+
 jobs:
   tag-generation:
     name: TAG Generation
@@ -53,8 +53,6 @@ jobs:
           tags: |
             "ghcr.io/brunobritodev/awesome-github-portfolio:${{ needs.tag-generation.outputs.tag }}"
             "ghcr.io/brunobritodev/awesome-github-portfolio:latest"
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   release:
     name: Release - Generate Changelog & Tag
