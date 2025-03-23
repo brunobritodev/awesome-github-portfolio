@@ -1,3 +1,11 @@
+## [1.0.2](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.1...v1.0.2) (2025-03-23)
+
+
+### Bug Fixes
+
+* project link ([583010e](https://github.com/brunobritodev/awesome-github-portfolio/commit/583010ef5d4f12927b1958a224374d6ab1a457fb))
+* title and other stuff ([e6a69ab](https://github.com/brunobritodev/awesome-github-portfolio/commit/e6a69ab92b42a6353b6269f7e36b0a5fe8bb304d))
+
 ## [1.0.1](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.0...v1.0.1) (2025-03-23)
 
 
