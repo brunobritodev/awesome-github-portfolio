@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.5...v1.0.6) (2025-03-24)
+
+
+### Bug Fixes
+
+* clean repo images and SEO ([8caef51](https://github.com/brunobritodev/awesome-github-portfolio/commit/8caef511c702655d64918911495e8364b5d21dfe))
+
 ## [1.0.5](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.4...v1.0.5) (2025-03-24)
 
 
