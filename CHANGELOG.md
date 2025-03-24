@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.6...v1.0.7) (2025-03-24)
+
+
+### Bug Fixes
+
+* forked repo bug ([fa33885](https://github.com/brunobritodev/awesome-github-portfolio/commit/fa338855ebb2cf3e6c6ead18d86e975433366738))
+
 ## [1.0.6](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.5...v1.0.6) (2025-03-24)
 
 
