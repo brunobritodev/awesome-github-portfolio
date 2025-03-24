@@ -126,6 +126,7 @@ namespace AwesomeGithubPortfolio.Core.Services
                             stargazerCount
                             forkCount
                             url
+                            isFork
                             languages(first:5){
                               nodes {
                                 name
@@ -144,6 +145,7 @@ namespace AwesomeGithubPortfolio.Core.Services
                             stargazerCount
                             forkCount
                             url
+                            isFork
                             languages(first:5){
                               nodes {
                                 name

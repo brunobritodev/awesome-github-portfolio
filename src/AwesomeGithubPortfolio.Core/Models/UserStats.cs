@@ -35,7 +35,8 @@ public class UserStats
                 }
 
                 // User contributions in his own repo
-                if (!MyRepositories.ContainsKey(contribution.Repository.Name))
+                if (!MyRepositories.ContainsKey(contribution.Repository.Name) && 
+                    !contribution.Repository.IsFork)
                 {
                     if (contribution.Repository.NameWithOwner.Contains(user.Login) ||
                         // If the contribution is in any of user Org, so will be treated as his own repo
