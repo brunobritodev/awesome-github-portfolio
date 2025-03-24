@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.4...v1.0.5) (2025-03-24)
+
+
+### Bug Fixes
+
+* img position ([c9bfe5d](https://github.com/brunobritodev/awesome-github-portfolio/commit/c9bfe5d78680eb8a970cfbebf60e74c2ad1d4347))
+
 ## [1.0.4](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.3...v1.0.4) (2025-03-23)
 
 
