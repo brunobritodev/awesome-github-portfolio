@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.3...v1.0.4) (2025-03-23)
+
+
+### Bug Fixes
+
+* user not found ([7461d88](https://github.com/brunobritodev/awesome-github-portfolio/commit/7461d882a0d41915daa49de4f5f970eb9da22110))
+
 ## [1.0.3](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.2...v1.0.3) (2025-03-23)
 
 
