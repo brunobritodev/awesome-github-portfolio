@@ -14,6 +14,7 @@ internal class OpenAiService : IOpenApiService
 {
     private readonly OpenAIClient _api;
     private readonly AsyncRetryPolicy _policy;
+    private readonly string _defaultModel;
 
     private const string prompt = """
                                   You are a professional AI assistant tasked with generating portfolio-style summaries based on GitHub activity data. 
@@ -41,6 +42,7 @@ internal class OpenAiService : IOpenApiService
 
     public OpenAiService(IConfiguration configuration, ILogger<OpenAiService> logger)
     {
+        _defaultModel = configuration["OpenAi:DefaultModel"] ?? configuration["OpenAi:Model"] ?? "gpt-4o-mini";
         _api = new OpenAIClient(configuration["OpenAi:ApiKey"]);
 
         _policy = Policy
@@ -75,7 +77,8 @@ internal class OpenAiService : IOpenApiService
 
 
         var content = System.Text.Json.JsonSerializer.Serialize(userStats, GithubOptions.DefaultJson);
-        var chat = _api.GetChatClient(model);
+        var selectedModel = string.IsNullOrWhiteSpace(model) ? _defaultModel : model;
+        var chat = _api.GetChatClient(selectedModel);
         var response = await _policy.ExecuteAndCaptureAsync(() => chat.CompleteChatAsync(
             string.Format(prompt, content, culture)
         ));

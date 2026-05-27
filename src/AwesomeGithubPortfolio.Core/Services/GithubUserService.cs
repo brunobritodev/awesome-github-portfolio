@@ -4,6 +4,7 @@ using System.Text.Json;
 using AwesomeGithubPortfolio.Core.Interfaces;
 using AwesomeGithubPortfolio.Core.Models;
 using AwesomeGithubPortfolio.Core.Models.Responses;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
@@ -14,10 +15,14 @@ internal class GithubService : IGithubService
 {
     private readonly HttpClient _client;
     private readonly AsyncRetryPolicy _policy;
+    private readonly string _defaultModel;
+    private readonly string _followMeModel;
 
-    public GithubService(IHttpClientFactory clientFactory, ILogger<GithubService> logger)
+    public GithubService(IHttpClientFactory clientFactory, ILogger<GithubService> logger, IConfiguration configuration)
     {
         _client = clientFactory.CreateClient("github");
+        _defaultModel = configuration["OpenAi:DefaultModel"] ?? configuration["OpenAi:Model"] ?? "gpt-4o-mini";
+        _followMeModel = configuration["OpenAi:FollowMeModel"] ?? _defaultModel;
         _policy = Policy
             .Handle<Exception>()
             .WaitAndRetryAsync(new[]
@@ -124,14 +129,14 @@ internal class GithubService : IGithubService
             };
             var response = await _policy.ExecuteAndCaptureAsync(() => _client.PostAsJsonAsync("graphql", request, GithubOptions.DefaultJson));
 
-            if (response.Outcome != OutcomeType.Successful || !response.Result.IsSuccessStatusCode) return "gpt-4o-mini";
+            if (response.Outcome != OutcomeType.Successful || !response.Result.IsSuccessStatusCode) return _defaultModel;
 
             var userInfo = await JsonSerializer.DeserializeAsync<DefaultResponse<UserData>>(await response.Result.Content.ReadAsStreamAsync(), GithubOptions.DefaultJson);
 
             var followingMe = userInfo?.Data?.User.Following.Nodes.Any(a => a.Login.Equals("brunobritodev"));
-            if (followingMe is not null && followingMe.Value) return "gpt-4o";
+            if (followingMe is not null && followingMe.Value) return _followMeModel;
 
-            if (userInfo?.Data is not null & userInfo.Data.User.Following.PageInfo.HasNextPage)
+            if (userInfo?.Data is not null && userInfo.Data.User.Following.PageInfo.HasNextPage)
             {
                 pageCursor = userInfo?.Data?.User.Following.PageInfo.EndCursor;
             }
@@ -141,7 +146,7 @@ internal class GithubService : IGithubService
             }
         } while (pageCursor != null);
 
-        return "gpt-4o-mini";
+        return _defaultModel;
     }
 
     private async Task<GitHubUser> GetUser(string username)
