@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.7...v1.1.0) (2026-05-27)
+
+
+### Features
+
+* select models ([03a1e5c](https://github.com/brunobritodev/awesome-github-portfolio/commit/03a1e5c3d358abf2ded7f400a818a1fb0d14ad3f))
+
 ## [1.0.7](https://github.com/brunobritodev/awesome-github-portfolio/compare/v1.0.6...v1.0.7) (2025-03-24)
 
 
